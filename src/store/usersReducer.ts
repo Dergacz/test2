@@ -2,11 +2,11 @@ import {Dispatch} from "redux";
 import {usersAPI} from "../api";
 
 export type UserType = {
-    id: number,
-    username: string,
-    nickname: string,
-    avatar: string,
-    country: string,
+    id: number
+    username: string
+    nickname: string
+    avatar: string
+    country: string
     age: number
 }
 
@@ -20,8 +20,8 @@ export type UsersInitialStateType = {
 const initialState: UsersInitialStateType = {
     users: [],
     page: 1,
-    records_per_page: 0,
-    total_records: 6
+    records_per_page: 2,
+    total_records: 10
 }
 
 type SetUsersActionType = {
@@ -29,14 +29,38 @@ type SetUsersActionType = {
     users: UserType[]
 }
 
-type ActionType = SetUsersActionType
+type SetPageActionType = {
+    type: "SET_PAGE"
+    currentPage: number
+}
 
-export const usersReducer = (state: UsersInitialStateType = initialState, action: ActionType) => {
+type SetTotalRecordsType = {
+    type: "SET_TOTAL_RECORDS_TYPE"
+    total_records: number
+}
+
+
+type ActionType = SetUsersActionType | SetPageActionType | SetTotalRecordsType
+
+export const usersReducer = (state: UsersInitialStateType = initialState, action: ActionType): UsersInitialStateType => {
+    console.log(action)
     switch (action.type) {
         case "SET_USERS": {
             return {
                 ...state,
                 users: action.users
+            }
+        }
+        case "SET_PAGE": {
+            return {
+                ...state,
+                page: action.currentPage
+            }
+        }
+        case "SET_TOTAL_RECORDS_TYPE": {
+            return {
+                ...state,
+                total_records: action.total_records
             }
         }
         default: {
@@ -52,11 +76,26 @@ export const setUsers = (users: UserType[]): SetUsersActionType => {
     }
 }
 
-export const getUsersThunk = () => {
+export const setCurrentPage = (page: number): SetPageActionType => {
+    return {
+        type: "SET_PAGE",
+        currentPage: page
+    }
+}
+
+export const setTotalRecords = (total_records: number): SetTotalRecordsType => {
+    return {
+        type: "SET_TOTAL_RECORDS_TYPE",
+        total_records
+    }
+}
+
+export const getUsersThunk = (page?: number, records_per_page?: number) => {
     return (dispatch: Dispatch) => {
         usersAPI.getUsers()
-            .then(data => {
-                dispatch(setUsers(data.data.users))
+            .then(res => {
+                console.log(res.metadata)
+                dispatch(setUsers(res.data))
             })
     }
 }

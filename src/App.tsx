@@ -1,6 +1,5 @@
 import React from "react";
 import style from "./app.module.css"
-import {Users} from "./components/Users/Users";
 import {BrowserRouter, NavLink, Route} from "react-router-dom";
 import {UsersList} from "./components/ListPage/UsersList";
 import {Messages} from "./components/Messages/Messages";
@@ -14,7 +13,7 @@ function App() {
                 <NavLink to={"/main"}>
                     <button>Main</button>
                 </NavLink>
-                <Route path={"/main"} render={() => <UsersContainer/>}/>
+                <Route path={"/main"} render={() => <UsersContainer />}/>
                 <Route path={"/listpage"} render={() => <UsersList/>}/>
                 <Route path={"/message"} render={() => <Messages/>}/>
 
