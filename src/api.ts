@@ -1,12 +1,12 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: "http://localhost:3001/api/user?page=1"
+    baseURL: "http://localhost:3001/api/"
 })
 
 export const usersAPI = {
-    getUsers() {
-        return instance.get("http://localhost:3001/api/user?page=1")
+    getUsers(page: number) {
+        return instance.get(`user?page=${page}`)
             .then(response => {
                 return response.data
             })

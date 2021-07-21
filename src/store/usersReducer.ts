@@ -15,13 +15,15 @@ export type UsersInitialStateType = {
     page: number
     records_per_page: number
     total_records: number
+    button: boolean
 }
 
 const initialState: UsersInitialStateType = {
     users: [],
     page: 1,
-    records_per_page: 2,
-    total_records: 10
+    records_per_page: 6,
+    total_records: 30,
+    button: true
 }
 
 type SetUsersActionType = {
@@ -90,11 +92,12 @@ export const setTotalRecords = (total_records: number): SetTotalRecordsType => {
     }
 }
 
-export const getUsersThunk = (page?: number, records_per_page?: number) => {
+export const getUsersThunk = (page: number) => {
     return (dispatch: Dispatch) => {
-        usersAPI.getUsers()
+        usersAPI.getUsers(page)
             .then(res => {
-                console.log(res.metadata)
+                console.log("ffff" + res.metadata)
+                dispatch(setCurrentPage(res.metadata))
                 dispatch(setUsers(res.data))
             })
     }

@@ -14,13 +14,12 @@ export const Users = (props: UsersPropsType) => {
 
     const onPageChanged = (pageNumber: number) => {
         props.setPage(pageNumber);
-        props.getUsers(pageNumber, props.total_records)
+        props.getUsers(pageNumber)
     }
 
         if (props.users.users.length === 0) {
-            props.getUsers(undefined, undefined)
+            props.getUsers(props.page)
         }
-
 
     return (
         <div>
@@ -32,13 +31,15 @@ export const Users = (props: UsersPropsType) => {
                     <div>{u.nickname}</div>
                     <div>{u.country}</div>
                     <div>{u.age}</div>
+                    {props.button && <button>Добавить к рассылке</button>}
                 </div>
             })}
-
-
             <ButtonList/>
             {pages.map(p => {
-                return <span onClick={() => onPageChanged(p)}>{p}</span>
+                return <button
+                    className={style.pages}
+                    onClick={() => onPageChanged(p)}>{p}
+                </button>
             })}
         </div>
     )
