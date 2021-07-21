@@ -1,14 +1,11 @@
-import React, {useState} from "react";
+import React from "react";
 import {ButtonList} from "../Buttons/ButtonList";
 import {UsersPropsType} from "./UsersContainer";
 import style from "./users.module.css"
-import {UserType} from "../../store/usersReducer";
 
 
 export const Users = (props: UsersPropsType) => {
-    let [stateUsers, setStateUsers] = useState<UserType[]>([]);
-    console.log(props.buttons)
-    stateUsers = props.users.users;
+
     const pagesCount = Math.ceil(props.total_records / props.records_per_page);
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
@@ -34,7 +31,7 @@ export const Users = (props: UsersPropsType) => {
     return (
 
         <div>
-            {stateUsers.map(u => {
+            {props.users.users.map(u => {
                 return <div className={style.userBlock} key={u.id}>
                     <div>
                         <img className={style.userImg} alt={"avatar"} src={u.avatar}/>

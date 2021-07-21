@@ -1,7 +1,8 @@
 import React from "react";
 import {Users} from "./Users";
 import {
-    getUsersThunk, setButton,
+    getUsersThunk,
+    setButton,
     setCurrentPage,
     setTotalRecords,
     setUsers,
@@ -11,7 +12,6 @@ import {
 import {AppStateType} from "../../store/reduxStore";
 import {connect} from "react-redux";
 import {compose} from "redux";
-import {UsersList} from "../ListPage/UsersList";
 
 class UsersContainer extends React.Component<UsersPropsType, UsersPropsType> {
 

@@ -10,14 +10,16 @@ import {FinalPage} from "./components/FinalPage/FinalPage";
 function App() {
     return (
         <BrowserRouter>
-            <div className={style.app}>
-                <NavLink to={"/main"}>
-                    <button className={buttonStyle.button}>На главную</button>
-                </NavLink>
-                <Route path={"/main"} render={() => <UsersContainer />}/>
-                <Route path={"/listpage"} render={() => <UsersList />}/>
-                <Route path={"/message"} render={() => <Messages/>}/>
-                <Route path={"/final"} render={() => <FinalPage/>}/>
+
+                <div className={style.app}>
+                    <NavLink to={"/main"}>
+                        <button className={buttonStyle.button}>На главную</button>
+                    </NavLink>
+                    <Route path={"/main"} render={() => <UsersContainer/>}/>
+                    <Route path={"/listpage"} render={() => <UsersList/>}/>
+                    <Route path={"/message"} render={() => <Messages/>}/>
+                    <Route path={"/final"} render={() => <FinalPage/>}/>
+
             </div>
         </BrowserRouter>
 
