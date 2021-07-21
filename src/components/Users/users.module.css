@@ -13,3 +13,7 @@
 .pages {
     margin: 5px;
 }
+
+.nickname {
+    font-weight: bold;
+}

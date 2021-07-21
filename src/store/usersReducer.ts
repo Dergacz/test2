@@ -15,7 +15,7 @@ export type UsersInitialStateType = {
     page: number
     records_per_page: number
     total_records: number
-    button: boolean
+    buttons: number[]
 }
 
 const initialState: UsersInitialStateType = {
@@ -23,7 +23,7 @@ const initialState: UsersInitialStateType = {
     page: 1,
     records_per_page: 6,
     total_records: 30,
-    button: true
+    buttons: []
 }
 
 type SetUsersActionType = {
@@ -41,8 +41,14 @@ type SetTotalRecordsType = {
     total_records: number
 }
 
+type SetButtonType = {
+    type: "SET_BUTTON_TYPE"
+    button: boolean
+    userId: number
+}
 
-type ActionType = SetUsersActionType | SetPageActionType | SetTotalRecordsType
+
+type ActionType = SetUsersActionType | SetPageActionType | SetTotalRecordsType | SetButtonType
 
 export const usersReducer = (state: UsersInitialStateType = initialState, action: ActionType): UsersInitialStateType => {
     console.log(action)
@@ -63,6 +69,13 @@ export const usersReducer = (state: UsersInitialStateType = initialState, action
             return {
                 ...state,
                 total_records: action.total_records
+            }
+        }
+        case "SET_BUTTON_TYPE": {
+            return {
+                ...state,
+                buttons: action.button ? [...state.buttons, action.userId]
+                    : state.buttons.filter(x => x !== action.userId)
             }
         }
         default: {
@@ -92,15 +105,24 @@ export const setTotalRecords = (total_records: number): SetTotalRecordsType => {
     }
 }
 
+export const setButton = (button: boolean, userId: number): SetButtonType => {
+    return {
+        type: "SET_BUTTON_TYPE",
+        button,
+        userId
+    }
+}
+
 export const getUsersThunk = (page: number) => {
     return (dispatch: Dispatch) => {
         usersAPI.getUsers(page)
             .then(res => {
-                console.log("ffff" + res.metadata)
                 dispatch(setCurrentPage(res.metadata))
                 dispatch(setUsers(res.data))
             })
     }
 }
+
+
 
 

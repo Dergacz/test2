@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import {ButtonList} from "../Buttons/ButtonList";
 import {UsersPropsType} from "./UsersContainer";
 import style from "./users.module.css"
+import {UserType} from "../../store/usersReducer";
 
 
 export const Users = (props: UsersPropsType) => {
-
+    let [stateUsers, setStateUsers] = useState<UserType[]>([]);
+    console.log(props.buttons)
+    stateUsers = props.users.users;
     const pagesCount = Math.ceil(props.total_records / props.records_per_page);
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
@@ -14,24 +17,36 @@ export const Users = (props: UsersPropsType) => {
 
     const onPageChanged = (pageNumber: number) => {
         props.setPage(pageNumber);
-        props.getUsers(pageNumber)
+        props.getUsers(pageNumber);
     }
 
-        if (props.users.users.length === 0) {
-            props.getUsers(props.page)
-        }
+    if (props.users.users.length === 0) {
+        props.getUsers(props.page)
+    }
+
+    const addUser = (userId: number) => {
+        props.setButton(true, userId)
+    }
+    const deleteUser = (userId: number) => {
+        props.setButton(false, userId)
+    }
 
     return (
+
         <div>
-            {props.users.users.map(u => {
+            {stateUsers.map(u => {
                 return <div className={style.userBlock} key={u.id}>
                     <div>
                         <img className={style.userImg} alt={"avatar"} src={u.avatar}/>
                     </div>
-                    <div>{u.nickname}</div>
+                    <div className={style.nickname}>{u.nickname}</div>
                     <div>{u.country}</div>
                     <div>{u.age}</div>
-                    {props.button && <button>Добавить к рассылке</button>}
+                    {
+                        !props.buttons.includes(u.id)
+                            ? <button onClick={() => addUser(u.id)}>Добавить к рассылке</button>
+                            : <button onClick={() => deleteUser(u.id)}>Убрать из рассылки</button>
+                    }
                 </div>
             })}
             <ButtonList/>

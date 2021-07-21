@@ -1,7 +1,7 @@
 import React from "react";
 import {Users} from "./Users";
 import {
-    getUsersThunk,
+    getUsersThunk, setButton,
     setCurrentPage,
     setTotalRecords,
     setUsers,
@@ -10,6 +10,8 @@ import {
 } from "../../store/usersReducer";
 import {AppStateType} from "../../store/reduxStore";
 import {connect} from "react-redux";
+import {compose} from "redux";
+import {UsersList} from "../ListPage/UsersList";
 
 class UsersContainer extends React.Component<UsersPropsType, UsersPropsType> {
 
@@ -25,7 +27,8 @@ class UsersContainer extends React.Component<UsersPropsType, UsersPropsType> {
                     getUsers={this.props.getUsers}
                     setPage={this.props.setPage}
                     setTotalRecords={this.props.setTotalRecords}
-                    button={this.props.button}
+                    buttons={this.props.buttons}
+                    setButton={this.props.setButton}
                 />
             </div>
         )
@@ -34,7 +37,7 @@ class UsersContainer extends React.Component<UsersPropsType, UsersPropsType> {
 
 type MapStateToPropsType = {
     users: UsersInitialStateType
-    button: boolean
+    buttons: number[]
     page: number
     records_per_page: number
     total_records: number
@@ -45,6 +48,7 @@ type MapDispatchToPropsType = {
     getUsers: (page: number) => void
     setPage: (page: number) => void
     setTotalRecords: (total_records: number) => void
+    setButton: (button: boolean, userId: number) => void
 }
 
 export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
@@ -55,14 +59,15 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         page: state.userPage.page,
         total_records: state.userPage.total_records,
         records_per_page: state.userPage.records_per_page,
-        button: state.userPage.button
+        buttons: state.userPage.buttons
     }
 }
 
-export default connect(mapStateToProps, {
-        setUsers,
-        setPage: setCurrentPage,
-        setTotalRecords,
-        getUsers: getUsersThunk
-    })
+export default compose<React.ComponentType>(connect(mapStateToProps, {
+    setUsers,
+    setPage: setCurrentPage,
+    setTotalRecords,
+    getUsers: getUsersThunk,
+    setButton
+}))
 (UsersContainer)

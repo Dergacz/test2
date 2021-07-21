@@ -10,5 +10,12 @@ export const usersAPI = {
             .then(response => {
                 return response.data
             })
+    },
+    addMessage() {
+        return instance.get(`message`)
+            .then(response => {
+                return response.data
+            })
     }
 }
+
